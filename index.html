@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Down the Memory Lane</title>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Trebuchet MS",sans-serif;
+}
+
+body{
+  overflow:hidden;
+  background:linear-gradient(to bottom,#ffe1ec,#fff8fb);
+  color:#6f5560;
+}
+
+/* TOP */
+
+.topbar{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+
+  width:min(1000px,92vw);
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  z-index:50;
+}
+
+
+.logo{
+  background:white;
+  padding:14px 20px;
+  border-radius:999px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.counter{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+
+  background:white;
+  padding:14px 20px;
+  border-radius:999px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+.music-btn{
+  background:white;
+
+  padding:14px 20px;
+
+  border-radius:999px;
+
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.music-btn{
+  border:none;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.music-btn:hover{
+  transform:scale(1.05);
+}
+
+/* MAIN */
+
+.container{
+  width:100vw;
+  height:100vh;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.game-box{
+  width:min(900px,90vw);
+
+  background:white;
+
+  border-radius:40px;
+
+  padding:40px;
+
+  box-shadow:0 20px 40px rgba(0,0,0,0.08);
+
+  text-align:center;
+
+  position:relative;
+}
+
+.stage-title{
+  font-size:2.5rem;
+  margin-bottom:10px;
+}
+
+.stage-sub{
+  margin-bottom:35px;
+  color:#856974;
+}
+
+/* MEMORY GRID */
+
+.memory-grid{
+  display:grid;
+
+  grid-template-columns:
+  repeat(3,1fr);
+
+  gap:20px;
+}
+
+.memory-card{
+  background:#fff3f8;
+
+  border-radius:30px;
+
+  height:160px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+
+  cursor:pointer;
+
+  transition:0.25s;
+
+  font-size:60px;
+
+  box-shadow:0 10px 20px rgba(0,0,0,0.05);
+}
+
+.memory-card:hover{
+  transform:translateY(-6px) rotate(2deg);
+}
+
+.memory-card.done{
+  opacity:0.45;
+}
+
+.memory-label{
+  font-size:15px;
+  margin-top:10px;
+}
+
+/* POPUP */
+
+.popup{
+  position:fixed;
+  inset:0;
+
+  background:rgba(0,0,0,0.45);
+
+  display:none;
+  justify-content:center;
+  align-items:center;
+
+  z-index:100;
+
+  backdrop-filter:blur(6px);
+}
+
+.popup.active{
+  display:flex;
+}
+
+.popup-card{
+  width:380px;
+
+  background:white;
+
+  border-radius:35px;
+
+  padding:18px;
+
+  animation:appear 0.4s ease;
+}
+
+.popup-card img{
+  width:100%;
+  height:320px;
+
+  object-fit:cover;
+
+  border-radius:25px;
+
+  margin-bottom:15px;
+}
+
+.popup-card p{
+  line-height:1.8;
+  padding:10px;
+}
+
+.popup-card button{
+  width:100%;
+
+  border:none;
+
+  margin-top:10px;
+
+  padding:14px;
+
+  border-radius:999px;
+
+  background:#ff9ec2;
+
+  color:white;
+
+  cursor:pointer;
+}
+
+@keyframes appear{
+  from{
+    opacity:0;
+    transform:scale(0.7);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+/* NEXT BUTTON */
+
+.next-btn{
+  margin-top:30px;
+
+  border:none;
+
+  padding:14px 24px;
+
+  border-radius:999px;
+
+  background:#ff9ec2;
+
+  color:white;
+
+  cursor:pointer;
+
+  display:none;
+}
+
+/* LETTER */
+
+.big-envelope{
+  width:240px;
+  height:180px;
+
+  margin:40px auto 0;
+
+  background:white;
+
+  border-radius:30px;
+
+  display:none;
+
+  justify-content:center;
+  align-items:center;
+
+  font-size:90px;
+
+  cursor:pointer;
+
+  box-shadow:0 15px 30px rgba(0,0,0,0.08);
+
+  animation:bounce 1.5s infinite;
+}
+
+@keyframes bounce{
+  50%{
+    transform:translateY(-10px);
+  }
+}
+
+/* LETTER SCREEN */
+
+.letter-screen,
+.gallery-screen{
+  position:fixed;
+  inset:0;
+
+  background:rgba(255,245,249,0.97);
+
+  display:none;
+
+  justify-content:center;
+  align-items:center;
+
+  z-index:200;
+
+  backdrop-filter:blur(5px);
+}
+
+.paper{
+  width:min(700px,90vw);
+
+  background:white;
+
+  border-radius:35px;
+
+  padding:45px;
+
+  line-height:1.9;
+
+  text-align:center;
+
+  box-shadow:0 20px 40px rgba(0,0,0,0.08);
+}
+
+.paper h1{
+  margin-bottom:20px;
+}
+
+.paper button{
+  margin-top:25px;
+
+  border:none;
+
+  padding:14px 22px;
+
+  border-radius:999px;
+
+  background:#ff9ec2;
+
+  color:white;
+
+  cursor:pointer;
+}
+
+/* ================= GALLERY ================= */
+.scrapbook-wrap{
+  width:100vw;
+  height:100vh;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* PAGE CONTAINER */
+
+.book{
+  width:min(1100px,95vw);
+  height:min(650px,85vh);
+
+  perspective:2000px;
+}
+
+/* EACH PAGE */
+
+.page{
+  position:absolute;
+  width:100%;
+  height:100%;
+
+  background:#fffafc;
+  border-radius:40px;
+
+  box-shadow:0 30px 60px rgba(0,0,0,0.15);
+
+  padding:40px;
+
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+
+  backface-visibility:hidden;
+
+  transition:transform 0.8s ease;
+}
+
+/* hidden pages */
+.page.hidden{
+  transform:rotateY(180deg);
+  opacity:0;
+  pointer-events:none;
+}
+
+/* images inside pages */
+
+.page img{
+  width:100%;
+  height:140px;
+
+  object-fit:cover;
+
+  border-radius:18px;
+
+  cursor:pointer;
+
+  box-shadow:0 10px 20px rgba(0,0,0,0.1);
+
+  transition:0.2s;
+}
+
+.page img:hover{
+  transform:scale(1.05);
+}
+
+/* navigation */
+
+.nav{
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+
+  display:flex;
+  gap:20px;
+}
+
+.nav button{
+  padding:12px 18px;
+  border:none;
+
+  border-radius:999px;
+
+  background:#ff9ec2;
+  color:white;
+
+  cursor:pointer;
+}
+
+/* FULLSCREEN VIEW */
+
+.viewer{
+  position:fixed;
+  inset:0;
+
+  background:rgba(0,0,0,0.85);
+
+  display:none;
+  justify-content:center;
+  align-items:center;
+
+  z-index:500;
+}
+
+.viewer img{
+  max-width:90vw;
+  max-height:90vh;
+
+  border-radius:20px;
+}
+
+
+
+/* FLOATING */
+
+.float{
+  position:fixed;
+  pointer-events:none;
+  animation:floatUp linear infinite;
+}
+
+@keyframes floatUp{
+  from{
+    transform:translateY(100vh);
+    opacity:1;
+  }
+  to{
+    transform:translateY(-120vh);
+    opacity:0;
+  }
+}
+
+</style>
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  let pages = document.querySelectorAll(".page");
+  let index = 0;
+
+  const viewer = document.createElement("div");
+  viewer.className = "viewer";
+  viewer.innerHTML = "<img>";
+  document.body.appendChild(viewer);
+
+  const viewerImg = viewer.querySelector("img");
+
+  function showPage(i){
+    pages.forEach((p,idx)=>{
+      p.classList.toggle("hidden", idx !== i);
+    });
+  }
+
+  showPage(0);
+
+  // NAV buttons
+  document.querySelectorAll(".nextPage").forEach(btn=>{
+    btn.onclick = () => {
+      if(index < pages.length - 1){
+        index++;
+        showPage(index);
+      }
+    };
+  });
+
+  document.querySelectorAll(".prevPage").forEach(btn=>{
+    btn.onclick = () => {
+      if(index > 0){
+        index--;
+        showPage(index);
+      }
+    };
+  });
+
+  // image viewer
+  document.querySelectorAll(".page img").forEach(img=>{
+    img.onclick = () => {
+      viewer.style.display = "flex";
+      viewerImg.src = img.src;
+    };
+  });
+
+  viewer.onclick = () => {
+    viewer.style.display = "none";
+  };
+
+});
+</script>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+
+<audio id="bgMusic" loop>
+    <source src="dancing-queen.mp3" type="audio/mpeg">
+</audio>
+
+<!-- TOP -->
+
+<div class="topbar">
+
+  <div class="logo">
+    Happy Mother's Day Memz!
+  </div>
+
+  <div class="counter">
+    💌 <span id="counter">0</span>/9
+  </div>
+
+  <button class="music-btn" id="musicBtn">
+    🎵
+  </button>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="container">
+
+<div class="game-box">
+
+<h1 class="stage-title" id="stageTitle">
+👶
+</h1>
+
+<p class="stage-sub" id="stageSub">
+
+</p>
+
+<div class="memory-grid" id="memoryGrid">
+
+<!-- PAST -->
+
+<div class="memory-card"
+data-stage="past"
+data-img="https://media.discordapp.net/attachments/1486354592697417915/1502702729834004723/FB_IMG_1778342292211.jpg?ex=6a00ac79&is=69ff5af9&hm=a383989b43eeaf8c07546eb46d917b103154e09e624e37dd815bff20519a353c&=&format=webp&width=456&height=609">
+
+🍼
+
+<div class="memory-label">
+Tap!
+</div>
+
+</div>
+
+<div class="memory-card"
+data-stage="past"
+data-img="https://media.discordapp.net/attachments/1486354592697417915/1502702730093789296/FB_IMG_1778342258300.jpg?ex=6a00ac79&is=69ff5af9&hm=5a4507edc9feb9389dee4566a1a612d8d3cd953d774e417c650e7efb318056f6&=&format=webp&width=812&height=609">
+
+👨
+
+<div class="memory-label">
+  Tap!
+</div>
+
+</div>
+
+<div class="memory-card"
+data-stage="past"
+data-img="https://media.discordapp.net/attachments/1486354592697417915/1502692232933806302/FB_IMG_1778337167357.jpg?ex=6a00a2b3&is=69ff5133&hm=9517767a1930e95aefc4fa2b6fc721fb7d4ecdb88754ccc91f4b6d4d4b1bb70d&=&format=webp&width=812&height=609">
+
+👅
+
+<div class="memory-label">
+  Tap!
+</div>
+
+</div>
+
+<!-- PRESENT -->
+
+<div class="memory-card"
+style="display:none;"
+data-stage="present"
+data-img="https://media.discordapp.net/attachments/1486354592697417915/1502692231612465273/FB_IMG_1778337132141.jpg?ex=6a00a2b2&is=69ff5132&hm=a812acd3da3cb780f555f94c1e67753d14c79549c932fa2ddc6b7515b7251d27&=&format=webp&width=812&height=609"
+data-text="">
+
+🦀
+
+<div class="memory-label">
+Tap!
+</div>
+
+</div>
+
+<div class="memory-card"
+style="display:none;"
+data-stage="present"
+data-img="https://media.discordapp.net/attachments/1486354592697417915/1502692208111783936/FB_IMG_1778336995888.jpg?ex=6a00a2ad&is=69ff512d&hm=f337270780414d04cacb41ce034db7f85287edc8c374768266cd35f50b6ecfde&=&format=webp&width=343&height=609"
+data-text="">
+
+🍦
+
+<div class="memory-label">
+Tap!
+</div>
+
+</div>
+
+<div class="memory-card"
+style="display:none;"
+data-stage="present"
+data-img="https://media.discordapp.net/attachments/1486354592697417915/1502692229670637689/FB_IMG_1778337082462.jpg?ex=6a00a2b2&is=69ff5132&hm=e9820beadb3fd949bf5efff2d91e3bebd6c9d04068c5ae1bdd649daf90f2d10a&=&format=webp&width=810&height=609"
+data-text="">
+
+🤳
+
+<div class="memory-label">
+Tap!
+</div>
+
+</div>
+
+<!-- FUTURE -->
+
+<div class="memory-card"
+style="display:none;"
+data-stage="future"
+data-img="https://media.discordapp.net/attachments/1486354592697417915/1502706340475306014/IMG-20250928-WA0001.jpg?ex=6a00afd6&is=69ff5e56&hm=7bcf3d21138e5ea0649acf3a53c40fe5deb3903e9fdf042a9ce841c1cfd6ab9b&=&format=webp&width=456&height=609"
+data-text="">
+
+🪞
+
+<div class="memory-label">
+Tap!
+</div>
+
+</div>
+
+<div class="memory-card"
+style="display:none;"
+data-stage="future"
+data-img="https://media.discordapp.net/attachments/1486354592697417915/1502706339498033372/IMG-20250706-WA00011.jpg?ex=6a00afd6&is=69ff5e56&hm=7234d81f3b7d1afad940bc8fb0b3a247085204f5f4fa1dd43e28140173e75bef&=&format=webp&width=456&height=609"
+data-text="">
+
+🍗
+
+<div class="memory-label">
+Tap!
+</div>
+
+</div>
+
+<div class="memory-card"
+style="display:none;"
+data-stage="future"
+data-img="https://media.discordapp.net/attachments/1486354592697417915/1502692237165985833/IMG-20260509-WA0000.jpg?ex=6a00a2b4&is=69ff5134&hm=b4c2eeeacb6fef0c23b6a555501dd9c9e9e2460b1b0fc9892cbe59b5c5067531&=&format=webp&width=1005&height=753"
+data-text="">
+
+🍽️
+
+<div class="memory-label">
+Tap!
+</div>
+
+</div>
+
+</div>
+
+<button class="next-btn" id="nextBtn">
+Next Stage 🌷
+</button>
+
+<div class="big-envelope" id="envelope">
+💌
+</div>
+
+</div>
+
+</div>
+
+<!-- POPUP -->
+
+<div class="popup" id="popup">
+
+<div class="popup-card">
+
+<img id="popupImg">
+
+<p id="popupText"></p>
+
+<button id="closePopup">
+close ♡
+</button>
+
+</div>
+
+</div>
+
+<!-- LETTER -->
+<div class="letter-screen" id="letterScreen" style="display:none;">
+  <div class="paper">
+    <h1>Happy Mother's Day Mem! 💌</h1>
+
+    <p id="letterText"></p>
+
+<button id="openGallery">
+Open Gallery 🌷
+</button>
+
+</div>
+
+</div>
+
+<!-- GALLERY -->
+
+<div class="gallery-screen" id="galleryScreen">
+
+<div class="gallery-wrap">
+
+<div class="gallery-title">
+
+
+</div>
+
+<div class="scrapbook-wrap">
+  <div class="book">
+
+     <!-- PAGE 1 -->
+    <div class="page">
+
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502702729557184662/FB_IMG_1778342446375.jpg?ex=6a00ac79&is=69ff5af9&hm=53f81da4bcd0d34e7c7b39b26f86dc035d783fa126a559b79e797685a7ecb0c3&=&format=webp&width=456&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502692232501923840/FB_IMG_1778337160905.jpg?ex=6a00a2b2&is=69ff5132&hm=9b4f4ba7548973e78065d044e93838e9f14dc22e5685e84898934b71a1f7ccb6&=&format=webp&width=812&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502692232036352020/FB_IMG_1778337152904.jpg?ex=6a00a2b2&is=69ff5132&hm=63df380e07dd6750c073c57b9c408b47f88850f5207bad4277833f79224d99d4&=&format=webp&width=812&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502702730417016915/FB_IMG_1778342225038.jpg?ex=6a00ac79&is=69ff5af9&hm=9e0954ec061d40e2331cf7dc96511ff5e509acbb46fbe187876add2d69ccae0d&=&format=webp&width=812&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502692230287065139/FB_IMG_1778337100640.jpg?ex=6a00a2b2&is=69ff5132&hm=3d5f909a95fdd37b19cd7667e8079cc29defd991d20e6491186c15885c5aa416&=&format=webp&width=812&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502692228546691263/FB_IMG_1778337041996.jpg?ex=6a00a2b1&is=69ff5131&hm=cc44b21aeba8b77eea02c3fada290d7cf32b0be81441b79337dbbab07d92b145&=&format=webp&width=812&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502692207155478660/FB_IMG_1778336958611.jpg?ex=6a00a2ac&is=69ff512c&hm=a7fb134fdbb6c96c1f3b4c1d49539c8026da6bb88309f8b325a30580b9e47df3&=&format=webp&width=1079&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502709547863773184/Screenshot_20260509_182848_Facebook.jpg?ex=6a00b2d3&is=69ff6153&hm=822ec44876d9b206152d28c58f3217b0ea8e03033854a142f9454b6e63d094b3&=&format=webp&width=995&height=753">
+ <div class="nav">
+        <button class="nextPage">Next ➜</button>
+      </div>
+    </div>
+
+      <!-- PAGE 2 -->
+    <div class="page hidden">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502692206140461306/FB_IMG_1778336890446.jpg?ex=6a00a2ac&is=69ff512c&hm=c940d784069c07b2e41f533f236dde66056a441003f6a42ca7563580d41086ed&=&format=webp&width=456&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502692205385617418/FB_IMG_1778336883610.jpg?ex=6a00a2ac&is=69ff512c&hm=007e6710ced4b5f23ca0d43965c304a7d82763c66f18e3982c6367e0ac27fef3&=&format=webp&width=343&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502692204899209236/FB_IMG_1778336864660.jpg?ex=6a00a2ac&is=69ff512c&hm=fc24425787da936a73fb68435132f228b32b3cc8881bbdb7616e3124ea1859ed&=&format=webp&width=812&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502692204358139944/FB_IMG_1778336850443.jpg?ex=6a00a2ac&is=69ff512c&hm=6274758c9b33462a1311b0423c9c333cf597368194ec61404cdc2944b7f61717&=&format=webp&width=282&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502692203955228894/FB_IMG_1778336835790.jpg?ex=6a00a2ac&is=69ff512c&hm=900e3e97151e4bb0b727e2db2b82e2c67b07be48b1cbd04c17f9e9db5595ddbd&=&format=webp&width=617&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502692203632525532/FB_IMG_1778336826654.jpg?ex=6a00a2ac&is=69ff512c&hm=8f635406f7a6eb3727c42bd4d556d08faf4fb86924c93f78454c2468a9d3623f&=&format=webp&width=456&height=609">
+ <div class="nav">
+        <button class="prevPage">⬅ Back</button>
+        <button class="nextPage">Next ➜</button>
+      </div>
+    </div>
+
+       <!-- PAGE 3 -->
+    <div class="page hidden">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502702730731585687/FB_IMG_1778342223327.jpg?ex=6a00ac79&is=69ff5af9&hm=82f45c2e8b92973a45341a8fb382ce9ab73604ca8f07010ab52bc6687a457098&=&format=webp&width=812&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502702731041701989/FB_IMG_1778342207985.jpg?ex=6a00ac79&is=69ff5af9&hm=9bba3064e94273b28e943df7b727ba7c8fe5fb13d4d5e72940f9de450bca165a&=&format=webp&width=812&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502702731339628554/FB_IMG_1778342179859.jpg?ex=6a00ac7a&is=69ff5afa&hm=2e11503dc96de3198bb68dd6c49095184a981869bca0395b03c63641b80b38ca&=&format=webp&width=456&height=609">
+<img src="https://media.discordapp.net/attachments/1486354592697417915/1502702731629166764/FB_IMG_1778342170992.jpg?ex=6a00ac7a&is=69ff5afa&hm=234e60b4bde5fdc7a42f3d6bb52c39dac96a2cc7ff2af6a67ea73168efd508a4&=&format=webp&width=456&height=609">
+   <p style="
+  grid-column:1 / -1;
+  font-size:22px;
+  font-weight:600;
+  text-align:center;
+  margin-top:10px;
+">
+Crabby patty jumpscare</p>
+
+ <div class="nav">
+        <button class="prevPage">⬅ Back</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+/* MUSIC */
+
+const music =
+document.getElementById("bgMusic");
+
+const musicBtn =
+document.getElementById("musicBtn");
+
+let playing = false;
+
+musicBtn.onclick = ()=>{
+
+  if(!playing){
+
+    music.play();
+
+    musicBtn.innerHTML = "💖";
+
+    playing = true;
+
+  }else{
+
+    music.pause();
+
+    musicBtn.innerHTML = "🎵";
+
+    playing = false;
+
+  }
+
+};
+
+/* POPUP */
+
+const popup =
+document.getElementById("popup");
+
+const popupImg =
+document.getElementById("popupImg");
+
+const popupText =
+document.getElementById("popupText");
+
+document
+.getElementById("closePopup")
+.onclick = ()=>{
+
+  popup.classList.remove("active");
+
+};
+
+/* STAGES */
+
+const cards =
+document.querySelectorAll(".memory-card");
+
+const nextBtn =
+document.getElementById("nextBtn");
+
+const counter =
+document.getElementById("counter");
+
+const title =
+document.getElementById("stageTitle");
+
+const sub =
+document.getElementById("stageSub");
+
+const envelope =
+document.getElementById("envelope");
+
+let total = 0;
+
+let stage = "past";
+
+let stageCount = 0;
+
+cards.forEach(card=>{
+
+  card.addEventListener("click",()=>{
+
+    if(card.classList.contains("done"))
+    return;
+
+    if(card.dataset.stage !== stage)
+    return;
+
+    card.classList.add("done");
+
+    popup.classList.add("active");
+
+    popupImg.src = card.dataset.img;
+
+    popupText.textContent =
+    card.dataset.text;
+
+    total++;
+
+    stageCount++;
+
+    counter.textContent = total;
+
+    if(stageCount === 3){
+
+      if(stage !== "future"){
+
+        nextBtn.style.display =
+        "inline-block";
+
+      }else{
+
+        envelope.style.display =
+        "flex";
+
+      }
+
+    }
+
+  });
+
+});
+
+/* NEXT STAGE */
+
+nextBtn.onclick = ()=>{
+
+  nextBtn.style.display = "none";
+
+  stageCount = 0;
+
+  if(stage === "past"){
+
+    stage = "present";
+
+    title.innerHTML =
+    "👶👶";
+
+    sub.innerHTML =
+    "";
+
+  }else if(stage === "present"){
+
+    stage = "future";
+
+    title.innerHTML =
+    "👨🏽‍👩‍👧‍👧🏻";
+
+    sub.innerHTML =
+    "";
+
+  }
+
+  cards.forEach(card=>{
+
+    if(card.dataset.stage === stage){
+
+      card.style.display = "flex";
+
+    }
+
+  });
+
+};
+
+/* LETTER */
+document.getElementById("envelope").onclick = openLetter;
+const fullLetter = `Good morning mem,
+
+I wanted to make something from the heart kay wa nakoy money wahaha joke
+
+Naka think ko pag bata namo mas kuan mis DIY basta events dayon imo gyud permi e keep amo gifts🥹
+
+I wanted to do something like that again now cuz I feel like DIY gifts are more special because galing sa heart and I wanted to make you feel special on this day.
+
+Thank you for everything mem, I can't thank you enough for all the sacrifices you've made just for us.
+
+Even if balik2 ang stories nimo sa HS, maminaw gihapon mi wahahaha
+
+I hope this website made your day today and made you feel how much I appreciate you and how you’ve been the best mom to us both!
+
+Ako e relive atoa memories>_<
+
+We love you always mem!
+
+Kaon sa daghan kay basi mag kaon ta heehee
+
+— Fam`;
+
+function openLetter(){
+
+  document.getElementById("letterScreen").style.display = "flex";
+
+  const textEl = document.getElementById("letterText");
+  const music = document.getElementById("letterMusic");
+
+  textEl.innerHTML = "";
+
+  let i = 0;
+
+  // 🎵 soft music fade in
+  if(music){
+    music.volume = 0;
+    music.play();
+
+    let v = 0;
+    const fade = setInterval(()=>{
+      if(v < 0.6){
+        v += 0.05;
+        music.volume = v;
+      } else {
+        clearInterval(fade);
+      }
+    },150);
+  }
+
+  // ⌨️ typing effect
+  function type(){
+    if(i < fullLetter.length){
+      textEl.innerHTML += fullLetter[i] === "\n" ? "<br>" : fullLetter[i];
+      i++;
+      setTimeout(type, 25);
+    }
+  }
+
+  type();
+}
+
+function closeLetter(){
+  document.getElementById("letterScreen").style.display = "none";
+
+  const music = document.getElementById("letterMusic");
+  if(music) music.pause();
+}
+
+/* GALLERY */
+
+document
+.getElementById("openGallery")
+.onclick = ()=>{
+
+  document
+  .getElementById("galleryScreen")
+  .style.display = "flex";
+
+};
+
+/* FLOATING */
+
+function createFloat(){
+
+  const float =
+  document.createElement("div");
+
+  float.classList.add("float");
+
+  float.innerHTML =
+  ["🌸","💖","✨","💌"]
+  [Math.floor(Math.random()*4)];
+
+  float.style.left =
+  Math.random()*100 + "vw";
+
+  float.style.fontSize =
+  (15 + Math.random()*18) + "px";
+
+  float.style.animationDuration =
+  (5 + Math.random()*5) + "s";
+
+  document.body.appendChild(float);
+
+  setTimeout(()=>{
+    float.remove();
+  },10000);
+
+}
+
+setInterval(createFloat,800);
+
+
+</script>
+
+</body>
+</html>
