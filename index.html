@@ -291,7 +291,43 @@ body{
 
 /* LETTER SCREEN */
 
-.letter-screen,
+.letter-screen{
+  position:fixed;
+  inset:0;
+
+  background:rgba(255,245,249,0.97);
+
+  display:none;
+
+  justify-content:center;
+  align-items:center;
+
+  z-index:200;
+
+  backdrop-filter:blur(5px);
+
+  overflow-y:auto; /* 🔥 allows scrolling */
+
+  padding:40px 20px;
+}
+.paper{
+  width:min(700px,90vw);
+
+  background:white;
+
+  border-radius:35px;
+
+  padding:45px;
+
+  line-height:1.9;
+
+  text-align:center;
+
+  box-shadow:0 20px 40px rgba(0,0,0,0.08);
+
+  max-height:90vh;
+  overflow-y:auto;
+}
 .gallery-screen{
   position:fixed;
   inset:0;
@@ -992,12 +1028,11 @@ document.getElementById("envelope").onclick = openLetter;
 const fullLetter = `Good morning mem,
 
 I wanted to make something from the heart kay wa nakoy money wahaha joke
-Naka think ko pag bata namo mas kuan mis DIY basta events dayon imo gyud permi e keep amo gifts🥹
-I wanted to do something like that again now cuz I feel like DIY gifts are more special because galing sa heart and I wanted to make you feel special on this day.
+Naka think ko pag bata namo mas kuan mis DIY dayon imo gyud permi e keep amo gifts🥹
+I wanted to do something like that again now cuz I feel like DIY gifts are more special because galing gyud sa heart and I wanted to make you feel special on this day.
 
 Thank you for everything mem, I can't thank you enough for all the sacrifices you've made just for us.
 Even if balik2 ang stories nimo sa HS, maminaw gihapon mi wahahaha
-
 I hope this website made your day today and made you feel how much I appreciate you and how you’ve been the best mom to us both!
 Ako e relive atoa memories>_<
 
