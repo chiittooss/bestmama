@@ -260,19 +260,19 @@ body{
 /* LETTER */
 
 .big-envelope{
+  opacity:0;
+  transform:translate(-50%,-50%) scale(0.8);
+  transition:opacity 1.5s ease, transform 1.5s ease;
+
+  position:absolute;
+  top:50%;
+  left:50%;
+
   width:240px;
   height:180px;
 
-  margin:40px auto 0;
-
   background:white;
-
   border-radius:30px;
-
-  display:none;
-
-  justify-content:center;
-  align-items:center;
 
   font-size:90px;
 
@@ -280,14 +280,19 @@ body{
 
   box-shadow:0 15px 30px rgba(0,0,0,0.08);
 
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
   animation:bounce 1.5s infinite;
 }
 
-@keyframes bounce{
-  50%{
-    transform:translateY(-10px);
-  }
+/* when it appears */
+.big-envelope.show{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
 }
+
 
 /* LETTER SCREEN */
 
@@ -934,10 +939,13 @@ cards.forEach(card=>{
 
       }else{
 
-        envelope.style.display =
-        "flex";
+  envelope.style.display = "flex";
 
-      }
+  setTimeout(() => {
+    envelope.classList.add("show");
+  }, 50);
+
+}
 
     }
 
@@ -987,7 +995,10 @@ nextBtn.onclick = ()=>{
 
 };
 
+
+
 /* LETTER */
+
 document.getElementById("envelope").onclick = openLetter;
 const fullLetter = `Good morning mem,
 
